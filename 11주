@@ -1,0 +1,321 @@
+#10-1
+balance = 0
+
+def deposit(amount) :
+  global balance
+  balance +=amount
+  return balance
+
+def withdraw(amount) :
+  global balance
+  balance -=amount
+  return balance
+
+print(deposit(100))
+print(withdraw(30))
+
+#10-2
+balance1 = 0
+balance2 = 0
+
+def deposit1(amount) :
+  global balance1
+  balance1 +=amount
+  return balance1
+
+def withdraw1(amount) :
+  global balance1
+  balance1 -=amount
+  return balance1
+
+def deposit2(amount):
+  global balance2
+  balance2 +=amount
+  return balance2
+
+def withdraw2(amount):
+  global balance2
+  balance2 -=amount
+  return balance2
+
+print(deposit1(100))
+print(withdraw1(30))
+print(deposit2(70))
+print(withdraw2(20))
+
+#10-3
+class Account:
+  def __init__(self):
+    self.balance=0
+  def deposit(self,amount):
+    self.balance += amount
+    return self.balance
+  def withdraw(self,amount):
+    self.balance -= amount
+    return self.balance
+a1=Account()
+print(a1.deposit1(100))
+print(a1.withdraw1(30))
+a2=Account()
+print(a2.deposit2(70))
+print(a2.withdraw2(20))
+
+#10-4
+class Account:
+  balance=0
+  def deposit(self,amount):
+    self.balance += amount
+    return self.balance
+  def withdraw(self,amount):
+    self.balance -= amount
+    return self.balance
+
+#10-5
+a1=Account()
+
+#10-6
+print(a1.deposit(100))
+
+#10-7
+print(a1.withdraw(30))
+
+#10-8
+a2=Account()
+print(a2.deposit(70))
+print(a2.withdraw(20))
+
+#10-9
+class Account:
+  def __init__(self):
+    self.balance=0
+  def deposit(self,amount):
+    self.balance += amount
+    return self.balance
+  def withdraw(self,amount):
+    self.balance -= amount
+    return self.balance
+
+#10-10
+a1=Account()
+
+#10-11
+class Account:
+  def __init__(self,amount):
+    self.balance=amount
+  def deposit(self,amount):
+    self.balance += amount
+    return self.balance
+  def withdraw(self,amount):
+    self.balance -= amount
+    return self.balance
+
+#10-12
+a1 = Account(50)
+
+#10-13
+print(a1.deposit(100))
+
+#10-14
+a2 = Account()
+
+#10-15
+class Account:
+  def __init__(self,amount=0):
+    self.balance=amount
+  def deposit(self,amount):
+    self.balance += amount
+    return self.balance
+  def withdraw(self,amount):
+    self.balance -= amount
+    return self.balance
+
+a1=Account(50)
+print(a1.deposit(70))
+a2=Account()
+print(a2.deposit(100))
+
+#10-16
+class Account:
+  def __init__(self,amount=0):
+    self.__balance=amount
+  def deposit(self,amount):
+    self.__balance += amount
+    return self.__balance
+  def withdraw(self,amount):
+    self.__balance -= amount
+    return self.__balance
+
+a1=Account(50)
+a1.__balance = 30
+print(a1.__balance)
+
+#10-17
+class Account:
+  def __init__(self,amount=0):
+    self.__balance=amount
+  def deposit(self,amount):
+    self.__balance += amount
+    return self.__balance
+  def withdraw(self,amount):
+    self.__balance -= amount
+    return self.__balance
+
+a1=Account(50)
+print(a1.__balance)
+
+#10-18
+class Account:
+  def __init__(self,amount=0):
+    self.__balance=amount
+  def deposit(self,amount):
+    self.__balance += amount
+    return self.__balance
+  def withdraw(self,amount):
+    self.__balance -= amount
+    return self.__balance
+  def get_balance(self):
+    return self.__balance
+
+a1=Account(50)
+print(a1.get_balance())
+
+#10-19
+import math
+class Circle:
+  def __init__(self,radius=10):
+    self.__radius = radius
+  def get_radius(self):
+    return self.__radius
+  def set_radius(self,radius):
+    self.__radius = radius
+  def get_area(self):
+    return math.pi*self.__radius**2
+  def get_circumference(self):
+    return 2*math.pi*self.__radius
+c1=Circle(7)
+print('넓이:', c1.get_area())
+print('둘레:',c1.get_circumference())
+c1.set_radius(10)
+print('넓이:', c1.get_area())
+print('둘레:',c1.get_circumference())
+
+#10-20
+class Student:
+  def __init__(self,name,math,computer):
+    self.__name = name
+    self.__math = math
+    self.__computer = computer
+  def get_name(self):
+    return self.__name
+  def get_average(self):
+    return (self.__math + self.__computer)/2
+  def set_math(self,math):
+    self.__math=math
+  def set_computer(self,computer):
+    self.__computer = computer
+  
+s1 = Student('hanbit',95,89)
+print(s1.get_name(),s1.get_average())
+s1.set_computer(97)
+print(s1.get_name(),s1.get_average())
+
+#10-21
+class Student:
+  def __init__(self,name,computer):
+    self.name =name
+    self.computer = computer
+  def set_computer(self,computer):
+    self.computer=computer
+  def get_name(self):
+    return self.name
+
+#10-22
+class Science(Student):
+  def __init__(slef,name,computer,science):
+    super().__init__(name,computer)
+    slef.science=science
+  def set_science(self,science):
+    self.science=science
+  def get_average(self):
+    return (self.science+self.computer)/2
+
+#10-23
+class Liberalarts(Student):
+  def __init__(slef,name,computer,social):
+    super().__init__(name,computer)
+    slef.social=social
+  def set_social(self,social):
+    self.social=social
+  def get_average(self):
+    return (self.social+self.computer)/2
+
+#10-24
+st1 = Science('hanbit1',90,80)
+
+#10-25
+print(st1.get_average())
+
+#10-26
+st1.set_computer(100)
+print(st1.get_average())
+
+#10-27
+st2 = Liberalarts('hanbit2',98,88)
+print(st2.get_average())
+st2.set_social(96)
+print(st2.get_name(),':',st2.get_average())
+
+#10-28
+from typing import get_type_hints
+class Figure:
+  def __init__(self,area,perimeter):
+    self.area=area
+    self.perimeter = perimeter
+  def get_area(self):
+    return self.area
+  def get_perimeter(self):
+    return self.perimeter
+
+class Circle(Figure):
+  def __init__(self,radius=10):
+    area=3.14*radius**2
+    perimeter = 2*3.14*radius
+    super().__init__(area,perimeter)
+    self.radius=radius
+  def set_radius(self,radius):
+    self.radius=radius
+    self.area=3.14*radius**2
+    self.perimeter = 2*3.14*radius
+  def get_radius(self):
+    return self.radius
+  
+class Retangle(Figure):
+  def __init__(self,width=10,height=10):
+    area=width*height
+    perimeter=2*width+2*height
+    super().__init__(area,perimeter)
+    self.width = width
+    self.height = height
+
+  def set_width(self,width):
+    self.width=width
+    self.area=width+self.height
+    self.perimeter=2*width+2*self.height
+  def set_height(self,height):
+    self.height = height
+    self.area = self.width*height
+    self.perimeter=2*self.width+2*height
+  def get_width(self):
+    return self.width
+  def get_height(self):
+    return self.height
+  
+f1=Circle(7)
+print(f1.get_area(),f1.get_perimeter())
+f1.set_radius(10)
+print(f1.get_area(),f1.get_perimeter())
+
+f2=Retangle(5,4)
+print(f2.get_area(),f2.get_perimeter())
+f2.set_width(7)
+print(f2.get_area(),f2.get_perimeter())
