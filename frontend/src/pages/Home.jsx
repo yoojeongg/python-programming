@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import "../styles/Home.css";
 import logo from "../images/logo.png";
+import data from "../data/information_final.json";
 
 function Home() {
   const [form, setForm] = useState({
@@ -15,86 +15,102 @@ function Home() {
     zero_restaurant: false,
   });
 
+  const [selectedItem, setSelectedItem] = useState(null);
   const [result, setResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
 
   const handleChange = (e) => {
-  const { name, value, type, checked } =
-    e.target;
+    const { name, value, type, checked } = e.target;
 
-  setForm({
-    ...form,
-    [name]:
-      type === "checkbox"
-        ? checked
-        : value,
-  });
-};
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
 
   const getRecommend = () => {
-    axios
-      .post("http://127.0.0.1:8000/api/recommend", form)
-      .then((res) => {
-        console.log("응답 데이터:", res.data);
+    let filtered = [...data];
 
-        setResult(res.data.data || []);
-        setCurrentPage(1); // 새 검색 시 1페이지
-      })
-      .catch((err) => {
-        console.log("API 에러:", err);
-      });
+    // 지역
+    if (form.region !== "전체") {
+      filtered = filtered.filter((item) =>
+        item.지역명?.includes(form.region)
+      );
+    }
+
+    // 카테고리
+    if (form.category !== "전체") {
+      filtered = filtered.filter(
+        (item) => item.업태명 === form.category
+      );
+    }
+
+    // 제로식당
+    if (form.zero_restaurant) {
+      filtered = filtered.filter(
+        (item) => item.제로식당 === "♻️"
+      );
+    }
+
+    // 주차
+    if (form.parking !== "상관없음") {
+      filtered = filtered.filter((item) =>
+        form.parking === "유"
+          ? item.주차가능 === "Y"
+          : item.주차가능 === "N"
+      );
+    }
+
+    // 와이파이
+    if (form.wifi !== "상관없음") {
+      filtered = filtered.filter((item) =>
+        form.wifi === "유"
+          ? item.와이파이제공 === "Y"
+          : item.와이파이제공 === "N"
+      );
+    }
+
+    setResult(filtered);
+    setCurrentPage(1);
   };
 
   // 페이지네이션
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
 
-  const currentItems = result.slice(
-    indexOfFirst,
-    indexOfLast
-  );
+  const currentItems = result.slice(indexOfFirst, indexOfLast);
 
-  const totalPages = Math.ceil(
-    result.length / itemsPerPage
-  );
-  // 페이지 버튼 5개씩 그룹화
-const pageGroup = Math.ceil(currentPage / 5);
-const startPage = (pageGroup - 1) * 5 + 1;
-const endPage = Math.min(
-  startPage + 4,
-  totalPages
-);
+  const totalPages = Math.ceil(result.length / itemsPerPage);
+
+  const pageGroup = Math.ceil(currentPage / 5);
+  const startPage = (pageGroup - 1) * 5 + 1;
+  const endPage = Math.min(startPage + 4, totalPages);
 
   return (
     <div className="container">
-
-      {/* 로고 */}
       <div className="title-box">
-        <img
-          src={logo}
-          alt="logo"
-          className="logo"
-        />
+        <img src={logo} alt="logo" className="logo" />
       </div>
 
       <div className="main-layout">
-
-        {/* 왼쪽 필터 */}
+        {/* 왼쪽 */}
         <div className="filter-section">
           <h1>필터링 선택</h1>
 
           <div className="filter-box">
 
             {/* 지역 */}
+            <div className="filter-row">
+            <p>지역</p>
             <select
               name="region"
               value={form.region}
               onChange={handleChange}
             >
               <option value="전체">
-                지역 선택
+                전체
               </option>
 
               <option value="강남구">강남구</option>
@@ -122,16 +138,18 @@ const endPage = Math.min(
               <option value="종로구">종로구</option>
               <option value="중구">중구</option>
               <option value="중랑구">중랑구</option>
-            </select>
+            </select></div>
 
             {/* 주차 */}
+            <div className="filter-row">
+            <p>주차장</p>
             <select
               name="parking"
               value={form.parking}
               onChange={handleChange}
             >
               <option value="상관없음">
-                주차장
+                전체
               </option>
               <option value="유">
                 있음
@@ -139,16 +157,18 @@ const endPage = Math.min(
               <option value="무">
                 없음
               </option>
-            </select>
+            </select></div>
 
             {/* 와이파이 */}
+            <div className="filter-row">
+            <p>와이파이</p>
             <select
               name="wifi"
               value={form.wifi}
               onChange={handleChange}
             >
               <option value="상관없음">
-                와이파이
+                전체
               </option>
               <option value="유">
                 있음
@@ -156,16 +176,18 @@ const endPage = Math.min(
               <option value="무">
                 없음
               </option>
-            </select>
+            </select></div>
 
             {/* 놀이방 */}
+            <div className="filter-row">
+            <p>놀이방</p>
             <select
               name="playroom"
               value={form.playroom}
               onChange={handleChange}
             >
               <option value="상관없음">
-                놀이방
+                전체
               </option>
               <option value="유">
                 있음
@@ -173,16 +195,18 @@ const endPage = Math.min(
               <option value="무">
                 없음
               </option>
-            </select>
+            </select></div>
 
             {/* 다국어 */}
+            <div className="filter-row">
+            <p>다국어메뉴</p>
             <select
               name="multilingual"
               value={form.multilingual}
               onChange={handleChange}
             >
               <option value="상관없음">
-                다국어 메뉴판
+                전체
               </option>
               <option value="유">
                 있음
@@ -190,16 +214,18 @@ const endPage = Math.min(
               <option value="무">
                 없음
               </option>
-            </select>
+            </select></div>
 
             {/* 화장실 */}
+            <div className="filter-row">
+            <p>화장실</p>
             <select
               name="restroom"
               value={form.restroom}
               onChange={handleChange}
             >
               <option value="상관없음">
-                가게 내부 화장실
+                전체
               </option>
               <option value="유">
                 있음
@@ -207,16 +233,18 @@ const endPage = Math.min(
               <option value="무">
                 없음
               </option>
-            </select>
+            </select></div>
 
             {/* 카테고리 */}
+            <div className="filter-row">
+            <p>카테고리</p>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
             >
               <option value="전체">
-                음식 카테고리
+                전체
               </option>
               <option value="한식">한식</option>
               <option value="중식">중식</option>
@@ -228,7 +256,7 @@ const endPage = Math.min(
               <option value="분식">분식</option>
               <option value="주점">주점</option>
               <option value="뷔페">뷔페</option>
-            </select>
+            </select></div>
 
             <div className="checkbox-box">
   <label>
@@ -243,122 +271,102 @@ const endPage = Math.min(
 </div>
 
             <button onClick={getRecommend}>
-              추천받기
+              검색
             </button>
           </div>
         </div>
 
-        {/* 오른쪽 결과 */}
-        {/* 오른쪽 결과 */}
-<div className="result-section">
+        {/* 오른쪽 */}
+        <div className="result-section">
+          <h2>추천 식당 ({result.length}곳)</h2>
 
-  <h2>
-    추천 식당 ({result.length}곳)
-  </h2>
+          {result.length === 0 ? (
+            <p>조건에 맞는 식당이 없어요.</p>
+          ) : (
+            <>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>식당명</th>
+                      <th>카테고리</th>
+                      <th>주소</th>
+                      <th>전화번호</th>
+                      <th>더보기</th>
+                    </tr>
+                  </thead>
 
-  {result.length === 0 ? (
-    <p>
-      조건에 맞는 식당이 없어요.
-    </p>
-  ) : (
-    <>
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>식당명</th>
-              <th>카테고리</th>
-              <th>대표 음식</th>
-              <th>주소</th>
-              <th>전화번호</th>
-              <th>♻️</th>
-            </tr>
-          </thead>
+                  <tbody>
+                    {currentItems.map((item, index) => (
+                      <tr key={index}>
+                        <td>{indexOfFirst + index + 1}</td>
+                        <td>{item.식당명}</td>
+                        <td>{item.업태명}</td>
+                        <td>{item.소재지도로명}</td>
+                        <td>{item.소재지전화번호}</td>
+                        <td><button className="more_btn" onClick={() => setSelectedItem(item)}>더보기</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-          <tbody>
-            {currentItems.map(
-              (item, index) => (
-                <tr key={index}>
-                  <td>
-                    {indexOfFirst +
-                      index +
-                      1}
-                  </td>
-                  <td>{item.식당명}</td>
-                  <td>{item.업태명}</td>
-                  <td>{item.주된음식}</td>
-                  <td>{item.소재지도로명}</td>
-                  <td>{item.소재지전화번호}</td>
-                  <td>{item.제로식당}</td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      </div>
+              {/* pagination */}
+              <div className="pagination">
+                <button
+                  onClick={() => setCurrentPage(startPage - 1)}
+                  disabled={startPage === 1}
+                >
+                  ◀
+                </button>
 
-      {/* 페이지네이션 */}
-      <div className="pagination">
+                {Array.from(
+                  { length: endPage - startPage + 1 },
+                  (_, i) => startPage + i
+                ).map((page) => (
+                  <button
+                    key={page}
+                    className={currentPage === page ? "active-page" : ""}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
 
-        {/* 이전 그룹 */}
-        <button
-          onClick={() =>
-            setCurrentPage(
-              startPage - 1
-            )
-          }
-          disabled={startPage === 1}
-        >
-          ◀
-        </button>
+                <button
+                  onClick={() => setCurrentPage(endPage + 1)}
+                  disabled={endPage >= totalPages}
+                >
+                  ▶
+                </button>
+              </div>
 
-        {/* 페이지 버튼 */}
-        {Array.from(
-          {
-            length:
-              endPage -
-              startPage +
-              1
-          },
-          (_, i) => startPage + i
-        ).map((page) => (
-          <button
-            key={page}
-            className={
-              currentPage === page
-                ? "active-page"
-                : ""
-            }
-            onClick={() =>
-              setCurrentPage(page)
-            }
-          >
-            {page}
-          </button>
-        ))}
+              {selectedItem && (
+  <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
+    <div className="modal" onClick={(e) => e.stopPropagation()}>
+      
+      <h3>{selectedItem.식당명}</h3>
+      <p2><b>카테고리:</b> {selectedItem.업태명}</p2>
+      <p2><b>대표음식:</b> {selectedItem.주된음식}</p2>
+      <p2><b>주소:</b> {selectedItem.소재지도로명}</p2>
+      <p2><b>전화번호:</b> {selectedItem.소재지전화번호}</p2>
+      <p2><b>해시태그:</b> {selectedItem.해시태그?.split(",").map(tag => `#${tag}`).join(" ")}</p2>
+      <p2><b>식당 면적:</b> {selectedItem["영업장면적(평)"]}</p2>
 
-        {/* 다음 그룹 */}
-        <button
-          onClick={() =>
-            setCurrentPage(
-              endPage + 1
-            )
-          }
-          disabled={
-            endPage >= totalPages
-          }
-        >
-          ▶
-        </button>
-
-      </div>
-    </>
-  )}
-</div>
+      <button className="close_btn" onClick={() => setSelectedItem(null)}>
+        닫기
+      </button>
+    </div>
+  </div>
+)}
+            </>
+          )}
+        </div>
       </div>
     </div>
-  );
+  
+);
 }
 
 export default Home;

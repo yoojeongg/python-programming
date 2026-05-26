@@ -129,6 +129,16 @@ information = information.drop(columns=['key'])
 sub_information_final = sub_information
 information=information.drop_duplicates(subset=['소재지도로명'])
 information_final = information.drop_duplicates()
+information_final.to_csv(
+    "information_final.csv",
+    index=False,
+    encoding="utf-8-sig"
+)
+information_final.to_json(
+    "information_final.json",
+    orient="records",
+    force_ascii=False
+)
 print("information 데이터 개수 : ",information.shape[0])
 # 제로식당 = 'Y' 인 식당 개수 출력
 zero_restaurant_count=(information_final['제로식당']== "♻️").sum()

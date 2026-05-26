@@ -37,18 +37,14 @@ def recommend_restaurant(
             result = result[
                 result[column]
                 .astype(str)
-                .str.contains(
-                    str(condition),
-                    na=False
-                )
+                .str.contains(str(condition), na=False)
             ]
 
-    # 제로식당 체크 시 필터링
+    # 제로식당 필터
     if zero_restaurant:
-        result = result[
-            result['제로식당'] == '♻️'
-        ]
+        result = result[result['제로식당'] == 'Y']
 
+    # 필요한 컬럼만 반환
     return result[
         [
             '식당명',
