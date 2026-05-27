@@ -243,16 +243,12 @@ function Home() {
               value={form.category}
               onChange={handleChange}
             >
-              <option value="전체">
-                전체
-              </option>
+              <option value="전체">전체</option>
               <option value="한식">한식</option>
               <option value="중식">중식</option>
               <option value="일식">일식</option>
               <option value="양식">양식</option>
-              <option value="아시안음식">
-                아시안음식
-              </option>
+              <option value="아시안음식">아시안음식</option>
               <option value="분식">분식</option>
               <option value="주점">주점</option>
               <option value="뷔페">뷔페</option>
@@ -347,12 +343,12 @@ function Home() {
     <div className="modal" onClick={(e) => e.stopPropagation()}>
       
       <h3>{selectedItem.식당명}</h3>
-      <p2><b>카테고리:</b> {selectedItem.업태명}</p2>
-      <p2><b>대표음식:</b> {selectedItem.주된음식}</p2>
-      <p2><b>주소:</b> {selectedItem.소재지도로명}</p2>
-      <p2><b>전화번호:</b> {selectedItem.소재지전화번호}</p2>
-      <p2><b>해시태그:</b> {selectedItem.해시태그?.split(",").map(tag => `#${tag}`).join(" ")}</p2>
-      <p2><b>식당 면적:</b> {selectedItem["영업장면적(평)"]}</p2>
+      <p2><b>카테고리</b> {selectedItem.업태명}</p2>
+      <p2><b>대표음식</b> {selectedItem.주된음식}</p2>
+      <p2><b>주소</b> {selectedItem.소재지도로명}</p2>
+      <p2><b>전화번호</b> {selectedItem.소재지전화번호}</p2>
+      <p2><b>해시태그</b> {selectedItem.해시태그?.split(",").map(tag => `#${tag}`).join(" ")}</p2>
+      <p2><b>식당 면적</b> {selectedItem["영업장면적(평)"]}</p2>
 
       <button className="close_btn" onClick={() => setSelectedItem(null)}>
         닫기

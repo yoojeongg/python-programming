@@ -55,6 +55,7 @@ h1 {
 p {
   width: 100%;
   font-size: 18px;
+  font-weight: bold;
   text-align: center;
 }
 .filter-row {
@@ -197,13 +198,11 @@ table {
 thead {
   background: #F3C11B;
 }
-
+tr{font-size:18px;}
 th {
   padding: 15px;
   text-align: center;
-
   color: white;
-  font-size: 18x;
   font-weight: 600;
 
   white-space: nowrap;
@@ -322,19 +321,24 @@ td:nth-child(6) {
   border-color: #F3C11B !important;
 }
 
-h3 {
+.modal h3 {
   width: 100%;
   font-size: 30px;
+  text-align: center;
 }
-p2 {
+.modal p2 {
   width: 100%;
   font-size: 20px;
   padding: 10px 0;
   text-align: left;
   display: flex;
   flex-direction: row;
-  gap: 20px;
 }
+.modal b {
+  width: 20%;
+  text-align: left;
+}
+
 
 .modal-overlay {
   position: fixed;
@@ -351,20 +355,21 @@ p2 {
 
 .modal {
   background: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 20px;
-  width: 700px;
+  width: 60%;
   max-height: 80vh;
   overflow-y: auto;
+  
 }
 .close_btn{
-  width: auto;
+  width: 100%;
   color: #444;
-  font-size: 18px;
+  font-size: 20px;
   padding: 10px;
   border-radius: 20px;
   background-color: #e5e5e5;
-  margin: 10px 0;
+  margin: 30px 0;
 }
 /* 비활성 버튼 */
 .pagination button:disabled {

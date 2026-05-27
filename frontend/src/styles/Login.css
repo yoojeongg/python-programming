@@ -1,0 +1,85 @@
+/* 전체 화면 중앙 정렬 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #FFEBA9;
+}
+
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+/* 박스 */
+.login-box {
+  width: 1000px;
+  background: white;
+  display: flex;
+  display: row;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+/* 제목 */
+.login-box img {
+  width: 100%;
+  text-align: center;
+  padding: 30px;
+  font-size: 30px;
+}
+
+/* input */
+.login-box input {
+  width: 100%;
+  padding: 15px;
+  margin: 30px 0;
+  border-radius: 10px;
+  font-size: 30px;
+}
+
+/* 버튼 */
+.login-box button {
+  width: 100%;
+  padding: 20px;
+  background: #F3C11B;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.login-box button:hover {
+  background: #F3C11B;
+}
+
+/* 필터 영역 */
+.login-box p {
+  width: 20%;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+/* 체크박스 그룹 */
+.login-box .filter-row h {
+  width: 80%;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.login-box .filter-row label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 20px;
+  gap: auto;
+}
+.login-box .filter-row input {
+  width: auto;
+}

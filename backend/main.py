@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
+from userdata_set import save_user
+from pydantic import BaseModel
+from typing import List
 from filter_alg import recommend_restaurant
 
 app = FastAPI()
@@ -8,11 +11,27 @@ app = FastAPI()
 # CORS (프론트 연결용)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5178"],  # 또는 "*" (개발용)
+    allow_origins=["*"], 
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class LoginRequest(BaseModel):
+    username: str
+    favorite_foods: List[str]
+
+
+@app.post("/login")
+def login(data: LoginRequest):
+
+    user = {
+        "username": data.username,
+        "favorite_foods": data.favorite_foods
+    }
+
+    return save_user(user)
 
 # CSV 직접 로딩 (read_csv 파일 제거)
 information_final = pd.read_csv("information_final.csv")
