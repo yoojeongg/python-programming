@@ -75,18 +75,23 @@ category_map = {
     '탕류(보신용)': '한식',
     '냉면집': '한식',
     '식육(숯불구이)': '한식',
+    '중식': '중식',
     '중국식': '중식',
     '일식': '일식',
     '횟집': '일식',
     '복어취급': '일식',
+    '양식': '양식',
     '경양식': '양식',
     '패밀리레스트랑': '양식',
+    '아시안음식': '아시안음식',
     '외국음식전문점(인도,태국등)': '아시안음식',
     '분식': '분식',
     '김밥(도시락)': '분식',
+    '주점': '주점',
     '호프/통닭': '주점',
     '감성주점': '주점',
     '정종/대포집/소주방': '주점',
+    '뷔페': '뷔페',
     '뷔페식': '뷔페',
     '기타': '기타'
 }
@@ -143,3 +148,14 @@ print("information 데이터 개수 : ",information.shape[0])
 # 제로식당 = 'Y' 인 식당 개수 출력
 zero_restaurant_count=(information_final['제로식당']== "♻️").sum()
 print("zero_restaurant 데이터 개수 : ",zero_restaurant_count)
+
+# 업태명이 기타인 식당들 보기
+etc_restaurants = sub_information[
+    sub_information['업태명'] == '기타'
+][['식당명', '업태명', '주된음식', '소재지도로명']]
+
+etc_restaurants.to_csv(
+    "etc_restaurants.csv",
+    index=False,
+    encoding="utf-8-sig"
+)

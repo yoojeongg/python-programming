@@ -1,9 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 import logo from "../images/logo.png";
 import data from "../data/information_final.json";
 
 function Home() {
+  const navigate = useNavigate();
+  const [mode, setMode] = useState("filter");
+  const user =
+    JSON.parse(localStorage.getItem("user")) || {};
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   const [form, setForm] = useState({
     region: "전체",
     parking: "상관없음",
@@ -14,13 +23,10 @@ function Home() {
     category: "전체",
     zero_restaurant: false,
   });
-
   const [selectedItem, setSelectedItem] = useState(null);
   const [result, setResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 10;
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -79,11 +85,8 @@ function Home() {
   // 페이지네이션
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
-
   const currentItems = result.slice(indexOfFirst, indexOfLast);
-
   const totalPages = Math.ceil(result.length / itemsPerPage);
-
   const pageGroup = Math.ceil(currentPage / 5);
   const startPage = (pageGroup - 1) * 5 + 1;
   const endPage = Math.min(startPage + 4, totalPages);
@@ -91,9 +94,39 @@ function Home() {
   return (
     <div className="container">
       <div className="title-box">
-        <img src={logo} alt="logo" className="logo" />
+        <div className="title-box-left">
+        <img src={logo} alt="logo" className="home-logo" />
+        <button
+    className={`search_btn ${
+      mode === "filter" ? "active" : "inactive"
+    }`}
+    onClick={() => setMode("filter")}
+  >
+    필터링 수동 검색
+  </button>
+
+  <button
+    className={`ai_btn ${
+      mode === "ai" ? "active" : "inactive"
+    }`}
+    onClick={() => setMode("ai")}
+  >
+    AI 자동 추천
+  </button>
+        </div>
+        <div className="title-box-right">
+        <span
+          className="username"
+          onClick={() => navigate("/profile")}
+        >
+          {user.username} 님
+        </span>
+        <button className="logout_btn" onClick={logout}>
+          로그아웃
+        </button></div>
       </div>
 
+      {mode === "filter" && (
       <div className="main-layout">
         {/* 왼쪽 */}
         <div className="filter-section">
@@ -359,7 +392,14 @@ function Home() {
             </>
           )}
         </div>
-      </div>
+      </div>)}
+
+      {mode === "ai" && (
+  <div className="ai-page">
+    <h1>AI 랜덤포레스트 학습 후 결과 보여줄 예정</h1>
+  </div>
+)}
+
     </div>
   
 );

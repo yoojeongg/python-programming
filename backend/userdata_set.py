@@ -1,17 +1,21 @@
 import json
 import os
 
-DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "users.json")
+DATA_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "data",
+    "users.json"
+)
 
-# 초기 파일 생성
+# 파일 없으면 생성
 if not os.path.exists(DATA_PATH):
-    with open(DATA_PATH, "w") as f:
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump([], f, ensure_ascii=False, indent=2)
 
 
-# 유저 전체 불러오기
+# 전체 유저 불러오기
 def load_users():
-    with open(DATA_PATH, "r") as f:
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -19,40 +23,36 @@ def load_users():
 def save_user(user):
     users = load_users()
 
+    # 중복 아이디 체크
     for u in users:
         if u["username"] == user["username"]:
-            return {"success": False, "msg": "이미 존재"}
+            return {
+                "success": False,
+                "message": "이미 존재하는 아이디"
+            }
 
     users.append(user)
 
-    with open(DATA_PATH, "w") as f:
-        json.dump(users, f, ensure_ascii=False, indent=2)
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
+        json.dump(
+            users,
+            f,
+            ensure_ascii=False,
+            indent=2
+        )
 
     return {
         "success": True,
         "user": user
     }
-    users = load_users()
-
-    # 중복 아이디 체크
-    for u in users:
-        if u["username"] == user["username"]:
-            return {"success": False, "msg": "이미 존재하는 아이디"}
-
-    users.append(user)
-
-    with open(DATA_PATH, "w") as f:
-        json.dump(users, f, ensure_ascii=False, indent=2)
-
-    return {"success": True, "user": user}
 
 
-# 특정 유저 찾기 (나중 추천용)
+# 특정 유저 찾기
 def get_user(username):
     users = load_users()
 
-    for u in users:
-        if u["username"] == username:
-            return u
+    for user in users:
+        if user["username"] == username:
+            return user
 
     return None

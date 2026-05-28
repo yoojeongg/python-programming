@@ -1,32 +1,42 @@
 [
   {
-    "username": "��",
+    "username": "yj",
+    "sex": "여성",
+    "age": "20대",
     "favorite_foods": [
-      "��"
+      "한식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "자극적",
+      "향신료"
     ]
   },
   {
-    "username": "",
+    "username": "유정",
+    "sex": "여성",
+    "age": "20대",
     "favorite_foods": [
-      ""
+      "한식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "자극적",
+      "향신료"
     ]
   },
   {
-    "username": "��",
+    "username": "하유정",
+    "sex": "여성",
+    "age": "20대",
     "favorite_foods": [
-      "��"
-    ]
-  },
-  {
-    "username": "����",
-    "favorite_foods": [
-      "�ѽ�"
-    ]
-  },
-  {
-    "username": "������",
-    "favorite_foods": [
-      "���"
+      "한식",
+      "일식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "자극적",
+      "향신료"
     ]
   }
 ]

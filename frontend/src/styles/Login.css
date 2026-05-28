@@ -1,45 +1,64 @@
-/* 전체 화면 중앙 정렬 */
+/* 전체 */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #FFEBA9;
 }
 
+/* 화면 중앙 */
 .login-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* 박스 */
+/* 로그인 박스 */
 .login-box {
-  width: 1000px;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
   background: white;
   display: flex;
-  display: row;
   flex-direction: column;
-  padding: 30px;
-  border-radius: 20px;
+  padding: 50px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  gap: 50px;
 }
 
-/* 제목 */
-.login-box img {
-  width: 100%;
-  text-align: center;
-  padding: 30px;
-  font-size: 30px;
+/* 로고 */
+.logo {
+  width: 700px;
+  display: block;
+  object-fit: contain;
 }
 
-/* input */
-.login-box input {
+/* 아이디 input */
+.login-box > input {
   width: 100%;
-  padding: 15px;
-  margin: 30px 0;
-  border-radius: 10px;
+  padding: 20px;
+  border: 2px solid #e5e5e5;
+  border-radius: 15px;
   font-size: 30px;
+  font-weight: bolder;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.2s;
+}
+
+.login-box > input:focus {
+  border-color: #F3C11B;
+}
+
+/* 회원가입 단계에서 비활성화 input */
+.login-box > input:disabled {
+  background: #f3f3f3;
+  color: #777;
+  cursor: not-allowed;
 }
 
 /* 버튼 */
@@ -49,37 +68,105 @@ body {
   background: #F3C11B;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
   cursor: pointer;
   font-size: 30px;
   font-weight: bold;
+  transition: 0.2s;
 }
 
 .login-box button:hover {
-  background: #F3C11B;
+  transform: translateY(-2px);
 }
 
-/* 필터 영역 */
-.login-box p {
-  width: 20%;
-  font-weight: bold;
-  font-size: 25px;
-}
-
-/* 체크박스 그룹 */
-.login-box .filter-row h {
-  width: 80%;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-}
-.login-box .filter-row label {
+/* 필터 한 줄 */
+.filter-row {
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 20px;
-  gap: auto;
 }
-.login-box .filter-row input {
+
+/* 제목 */
+.login-box .filter-row p {
+  width: 25%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* radio 그룹 */
+.radio-group {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+}
+/* 기본 박스 */
+.radio-group label {
   width: auto;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+/* 라디오 버튼 크게 */
+.radio-group input[type="radio"] {
+  transform: scale(1.5); 
+  cursor: pointer;
+}
+
+/* 선택된 박스 */
+.radio-group label.selected {
+  font-weight: bold;
+}
+
+/* 체크박스 묶음 */
+.checkbox-group {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+
+}
+/* 체크박스 숨김 */
+.checkbox-group input[type="checkbox"] {
+  display: none;
+}
+
+/* 기본 박스 */
+.checkbox-group label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: #fff8df;
+  border: 2px solid #f4df93;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* hover */
+.checkbox-group label:hover {
+  background: #ffe58a;
+}
+
+/* 체크됐을 때 박스 진해짐 */
+.checkbox-group input[type="checkbox"]:checked + span {
+  color: white;
+}
+
+/* 체크 상태 label */
+.checkbox-group label:has(input:checked) {
+  background: #F3C11B;
+  border-color: #d8a400;
+  color: white;
+  font-weight: bold;
+  transform: scale(1.03);
 }
