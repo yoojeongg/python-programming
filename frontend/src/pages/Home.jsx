@@ -77,10 +77,117 @@ function Home() {
           : item.와이파이제공 === "N"
       );
     }
+    // 놀이방
+if (form.playroom !== "상관없음") {
+  filtered = filtered.filter((item) =>
+    form.playroom === "유"
+      ? item.놀이방 === "Y"
+      : item.놀이방 === "N"
+  );
+}
+
+// 다국어 메뉴
+if (form.multilingual !== "상관없음") {
+  filtered = filtered.filter((item) =>
+    form.multilingual === "유"
+      ? item.다국어메뉴판 === "Y"
+      : item.다국어메뉴판 === "N"
+  );
+}
+
+// 화장실
+if (form.restroom !== "상관없음") {
+  filtered = filtered.filter((item) =>
+    form.restroom === "유"
+      ? item.화장실 === "Y"
+      : item.화장실 === "N"
+  );
+}
 
     setResult(filtered);
     setCurrentPage(1);
   };
+  const saveSatisfaction = (
+  value
+) => {
+  setSatisfaction(value);
+
+  const satisfactionData =
+    JSON.parse(
+      localStorage.getItem(
+        "restaurantSatisfaction"
+      )
+    ) || {};
+
+  const key =
+    `${user.username}_${selectedItem.식당명}`;
+
+  satisfactionData[key] =
+    value;
+
+  localStorage.setItem(
+    "restaurantSatisfaction",
+    JSON.stringify(
+      satisfactionData
+    )
+  );
+};
+const saveRating = (star) => {
+  setRating(star);
+
+  const ratings =
+    JSON.parse(
+      localStorage.getItem(
+        "restaurantRatings"
+      )
+    ) || {};
+
+  const key =
+    `${user.username}_${selectedItem.식당명}`;
+
+  ratings[key] = star;
+
+  localStorage.setItem(
+    "restaurantRatings",
+    JSON.stringify(ratings)
+  );
+};
+const getAverageRating = (
+  restaurantName
+) => {
+  const ratings =
+    JSON.parse(
+      localStorage.getItem(
+        "restaurantRatings"
+      )
+    ) || {};
+
+  const values = Object.entries(
+    ratings
+  )
+    .filter((entry) =>
+      entry[0].endsWith(
+        `_${restaurantName}`
+      )
+    )
+    .map((entry) =>
+      Number(entry[1])
+    );
+
+  if (values.length === 0) {
+    return "-";
+  }
+
+  const avg =
+    values.reduce(
+      (a, b) => a + b,
+      0
+    ) / values.length;
+
+  return avg.toFixed(1);
+};
+  const [satisfaction, setSatisfaction] = useState(null);
+  const [rating, setRating] = useState(0);
 
   // 페이지네이션
   const indexOfLast = currentPage * itemsPerPage;
@@ -322,6 +429,7 @@ function Home() {
                       <th>카테고리</th>
                       <th>주소</th>
                       <th>전화번호</th>
+                      <th>⭐</th>
                       <th>더보기</th>
                     </tr>
                   </thead>
@@ -334,7 +442,46 @@ function Home() {
                         <td>{item.업태명}</td>
                         <td>{item.소재지도로명}</td>
                         <td>{item.소재지전화번호}</td>
-                        <td><button className="more_btn" onClick={() => setSelectedItem(item)}>더보기</button></td>
+                        <td className="th_star">{getAverageRating(item.식당명)}</td>
+                        <td>
+  <button
+    className="more_btn"
+    onClick={() => {
+      setSelectedItem(item);
+
+      // 별점 데이터
+      const ratingData =
+        JSON.parse(
+          localStorage.getItem(
+            "restaurantRatings"
+          )
+        ) || {};
+
+      // 만족/불만족 데이터
+      const satisfactionData =
+        JSON.parse(
+          localStorage.getItem(
+            "restaurantSatisfaction"
+          )
+        ) || {};
+
+      const key =
+        `${user.username}_${item.식당명}`;
+
+      // 기존 별점 불러오기
+      setRating(
+        ratingData[key] || 0
+      );
+
+      // 기존 만족도 불러오기
+      setSatisfaction(
+        satisfactionData[key] || null
+      );
+    }}
+  >
+    더보기
+  </button>
+</td>
                       </tr>
                     ))}
                   </tbody>
@@ -372,22 +519,96 @@ function Home() {
               </div>
 
               {selectedItem && (
-  <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
-    <div className="modal" onClick={(e) => e.stopPropagation()}>
-      
-      <h3>{selectedItem.식당명}</h3>
-      <p2><b>카테고리</b> {selectedItem.업태명}</p2>
-      <p2><b>대표음식</b> {selectedItem.주된음식}</p2>
-      <p2><b>주소</b> {selectedItem.소재지도로명}</p2>
-      <p2><b>전화번호</b> {selectedItem.소재지전화번호}</p2>
-      <p2><b>해시태그</b> {selectedItem.해시태그?.split(",").map(tag => `#${tag}`).join(" ")}</p2>
-      <p2><b>식당 면적</b> {selectedItem["영업장면적(평)"]}</p2>
+  <div
+  className="modal-overlay"
+  onClick={() => setSelectedItem(null)}
+>
+  <div
+    className="modal"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <h3>{selectedItem.식당명}</h3>
 
-      <button className="close_btn" onClick={() => setSelectedItem(null)}>
+    <p><b>카테고리</b> {selectedItem.업태명}</p>
+    <p><b>대표음식</b> {selectedItem.주된음식}</p>
+    <p><b>주소</b> {selectedItem.소재지도로명}</p>
+    <p><b>전화번호</b> {selectedItem.소재지전화번호}</p>
+
+    <p>
+      <b>해시태그</b>{" "}
+      {selectedItem.해시태그
+        ?.split(",")
+        .map((tag) => `#${tag}`)
+        .join(" ")}
+    </p>
+
+    <p>
+      <b>식당 면적</b>{" "}
+      {selectedItem["영업장면적(평)"]}
+    </p>
+
+    <div className="rating-box">
+  {[1, 2, 3, 4, 5].map((star) => (
+    <span
+      key={star}
+      type="button"
+      className={
+        rating >= star
+          ? "star active"
+          : "star"
+      }
+      onClick={() =>
+        saveRating(star)
+      }
+    >
+      ★
+    </span>
+  ))}
+
+    {/* 만족도 */}
+    <div className="satisfaction-box">
+
+      <button
+        className={
+          satisfaction === "만족"
+            ? "selected"
+            : ""
+        }
+        onClick={() =>
+          saveSatisfaction("만족")
+        }
+      >
+        😊 만족
+      </button>
+
+      <button
+        className={
+          satisfaction === "불만족"
+            ? "selected"
+            : ""
+        }
+        onClick={() =>
+          saveSatisfaction("불만족")
+        }
+      >
+        😢 불만족
+      </button>
+    </div>
+    </div>
+
+    <div className="modal-btns">
+
+      <button
+        className="close_btn"
+        onClick={() =>
+          setSelectedItem(null)
+        }
+      >
         닫기
       </button>
     </div>
   </div>
+</div>
 )}
             </>
           )}
