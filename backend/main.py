@@ -5,13 +5,36 @@ from userdata_set import save_user, get_user
 from pydantic import BaseModel
 from typing import List
 from filter_alg import recommend_restaurant
+class UserInput(BaseModel):
+    sex: int
+    age: int
+    companion: int
+    price: int
+    time: int
+    atmosphere: int
 
+    korean: int
+    chinese: int
+    japanese: int
+    western: int
+    southeast: int
+    bunsik: int
+    pub: int
+    buffet: int
+
+    spicy: int
+    strong: int
+    spice: int
+    seafood: int
+    nuts: int
+    flour: int
+    dairy: int
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -72,24 +95,72 @@ information_final = pd.read_csv("information_final.csv")
 information_final = information_final.drop_duplicates()
 
 print("✅ 데이터 로딩 완료:", len(information_final))
+import joblib
 
-
+spanyu_model = joblib.load("user_sample_dataset_500.pkl")
+kong_model = joblib.load("user_sample_dataset_500_2.pkl")
 @app.post("/api/recommend")
 def recommend(data: dict):
 
-    result_df = recommend_restaurant(
-        df=information_final,
-        region=data.get("region", "전체"),
-        parking=data.get("parking", "상관없음"),
-        wifi=data.get("wifi", "상관없음"),
-        playroom=data.get("playroom", "상관없음"),
-        multilingual=data.get("multilingual", "상관없음"),
-        restroom=data.get("restroom", "상관없음"),
-        category=data.get("category", "전체"),
-        zero_restaurant=data.get("zero_restaurant", False),
-    )
+    try:
+        result_df = recommend_restaurant(data)
+
+        return {
+            "result":
+            result_df.to_dict(
+                orient="records"
+            )
+        }
+
+    except Exception as e:
+        print("추천 오류:", e)
+        return {
+            "error": str(e)
+        }
+    
+import joblib
+
+spanyu_model = joblib.load("user_sample_dataset_500.pkl")
+kong_model = joblib.load("user_sample_dataset_500_2.pkl")
+
+@app.post("/api/airecommend")
+def airecommend(req: UserInput):
+
+    user_data = [
+        req.sex,
+        req.age,
+        req.companion,
+        req.price,
+        req.time,
+        req.atmosphere,
+
+        req.korean,
+        req.chinese,
+        req.japanese,
+        req.western,
+        req.southeast,
+        req.bunsik,
+        req.pub,
+        req.buffet,
+
+        req.spicy,
+        req.strong,
+        req.spice,
+        req.seafood,
+        req.nuts,
+        req.flour,
+        req.dairy
+    ]
+
+    spanyu = spanyu_model.predict_proba(
+        [user_data]
+    )[0][1]
+
+    kong = kong_model.predict_proba(
+        [user_data]
+    )[0][1]
 
     return {
-        "count": len(result_df),
-        "data": result_df.to_dict(orient="records")
+        "spanyu": round(spanyu * 100, 1),
+        "kong": round(kong * 100, 1)
     }

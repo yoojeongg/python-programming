@@ -112,7 +112,7 @@ export default function Profile() {
               "30대",
               "40대",
               "50대",
-              "60대 이상",
+              "60대이상",
             ].map((item) => (
               <label
                 key={item}

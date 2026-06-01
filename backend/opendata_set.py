@@ -124,7 +124,7 @@ zero_restaurant['key'] = zero_restaurant['식당명'].astype(str) + "_" + zero_r
 information.loc[
     information['key'].isin(zero_restaurant['key']),
     '제로식당'
-] = "♻️"
+] = "Y"
 
 information = information.drop(columns=['key'])
 
@@ -146,16 +146,7 @@ information_final.to_json(
 )
 print("information 데이터 개수 : ",information.shape[0])
 # 제로식당 = 'Y' 인 식당 개수 출력
-zero_restaurant_count=(information_final['제로식당']== "♻️").sum()
+zero_restaurant_count=(information_final['제로식당']== "Y").sum()
 print("zero_restaurant 데이터 개수 : ",zero_restaurant_count)
+print(information_final.columns.tolist())
 
-# 업태명이 기타인 식당들 보기
-etc_restaurants = sub_information[
-    sub_information['업태명'] == '기타'
-][['식당명', '업태명', '주된음식', '소재지도로명']]
-
-etc_restaurants.to_csv(
-    "etc_restaurants.csv",
-    index=False,
-    encoding="utf-8-sig"
-)

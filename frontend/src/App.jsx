@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import Ai from "./pages/Ai";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 
@@ -12,8 +13,10 @@ function App() {
 
         {/* 홈 페이지 */}
         <Route path="/home" element={<Home />} />
-
         
+        {/* 홈 페이지 */}
+        <Route path="/ai" element={<Ai />} />
+
         {/* 프로필 페이지 */}
         <Route path="/profile" element={<Profile />} />
       </Routes>

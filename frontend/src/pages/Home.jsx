@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 import logo from "../images/logo.png";
-import data from "../data/information_final.json";
+import Ai from "./Ai";
 
 function Home() {
   const navigate = useNavigate();
@@ -15,11 +15,11 @@ function Home() {
   };
   const [form, setForm] = useState({
     region: "전체",
-    parking: "상관없음",
-    wifi: "상관없음",
-    playroom: "상관없음",
-    multilingual: "상관없음",
-    restroom: "상관없음",
+    parking: "전체",
+    wifi: "전체",
+    playroom: "전체",
+    multilingual: "전체",
+    restroom: "전체",
     category: "전체",
     zero_restaurant: false,
   });
@@ -35,78 +35,29 @@ function Home() {
       [name]: type === "checkbox" ? checked : value,
     });
   };
+//main의 filter_alg 호출
+  const getRecommend = async () => {
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/recommend",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      }
+    );
 
-  const getRecommend = () => {
-    let filtered = [...data];
+    const data = await response.json();
 
-    // 지역
-    if (form.region !== "전체") {
-      filtered = filtered.filter((item) =>
-        item.지역명?.includes(form.region)
-      );
-    }
-
-    // 카테고리
-    if (form.category !== "전체") {
-      filtered = filtered.filter(
-        (item) => item.업태명 === form.category
-      );
-    }
-
-    // 제로식당
-    if (form.zero_restaurant) {
-      filtered = filtered.filter(
-        (item) => item.제로식당 === "♻️"
-      );
-    }
-
-    // 주차
-    if (form.parking !== "상관없음") {
-      filtered = filtered.filter((item) =>
-        form.parking === "유"
-          ? item.주차가능 === "Y"
-          : item.주차가능 === "N"
-      );
-    }
-
-    // 와이파이
-    if (form.wifi !== "상관없음") {
-      filtered = filtered.filter((item) =>
-        form.wifi === "유"
-          ? item.와이파이제공 === "Y"
-          : item.와이파이제공 === "N"
-      );
-    }
-    // 놀이방
-if (form.playroom !== "상관없음") {
-  filtered = filtered.filter((item) =>
-    form.playroom === "유"
-      ? item.놀이방 === "Y"
-      : item.놀이방 === "N"
-  );
-}
-
-// 다국어 메뉴
-if (form.multilingual !== "상관없음") {
-  filtered = filtered.filter((item) =>
-    form.multilingual === "유"
-      ? item.다국어메뉴판 === "Y"
-      : item.다국어메뉴판 === "N"
-  );
-}
-
-// 화장실
-if (form.restroom !== "상관없음") {
-  filtered = filtered.filter((item) =>
-    form.restroom === "유"
-      ? item.화장실 === "Y"
-      : item.화장실 === "N"
-  );
-}
-
-    setResult(filtered);
+    setResult(data.result || []);
     setCurrentPage(1);
-  };
+
+  } catch (error) {
+    console.error("추천 오류:", error);
+  }
+};
   const saveSatisfaction = (
   value
 ) => {
@@ -213,13 +164,13 @@ const getAverageRating = (
   </button>
 
   <button
-    className={`ai_btn ${
-      mode === "ai" ? "active" : "inactive"
-    }`}
-    onClick={() => setMode("ai")}
-  >
-    AI 자동 추천
-  </button>
+  className={`ai_btn ${
+    mode === "ai" ? "active" : "inactive"
+  }`}
+  onClick={() => setMode("ai")}
+>
+  AI 자동 추천
+</button>
         </div>
         <div className="title-box-right">
         <span
@@ -288,13 +239,13 @@ const getAverageRating = (
               value={form.parking}
               onChange={handleChange}
             >
-              <option value="상관없음">
+              <option value="전체">
                 전체
               </option>
-              <option value="유">
+              <option value="Y">
                 있음
               </option>
-              <option value="무">
+              <option value="N">
                 없음
               </option>
             </select></div>
@@ -307,13 +258,13 @@ const getAverageRating = (
               value={form.wifi}
               onChange={handleChange}
             >
-              <option value="상관없음">
+              <option value="전체">
                 전체
               </option>
-              <option value="유">
+              <option value="Y">
                 있음
               </option>
-              <option value="무">
+              <option value="N">
                 없음
               </option>
             </select></div>
@@ -326,13 +277,13 @@ const getAverageRating = (
               value={form.playroom}
               onChange={handleChange}
             >
-              <option value="상관없음">
+              <option value="전체">
                 전체
               </option>
-              <option value="유">
+              <option value="Y">
                 있음
               </option>
-              <option value="무">
+              <option value="N">
                 없음
               </option>
             </select></div>
@@ -345,13 +296,13 @@ const getAverageRating = (
               value={form.multilingual}
               onChange={handleChange}
             >
-              <option value="상관없음">
+              <option value="전체">
                 전체
               </option>
-              <option value="유">
+              <option value="Y">
                 있음
               </option>
-              <option value="무">
+              <option value="N">
                 없음
               </option>
             </select></div>
@@ -364,13 +315,13 @@ const getAverageRating = (
               value={form.restroom}
               onChange={handleChange}
             >
-              <option value="상관없음">
+              <option value="전체">
                 전체
               </option>
-              <option value="유">
+              <option value="Y">
                 있음
               </option>
-              <option value="무">
+              <option value="N">
                 없음
               </option>
             </select></div>
@@ -405,7 +356,6 @@ const getAverageRating = (
     제로식당만 보기
   </label>
 </div>
-
             <button onClick={getRecommend}>
               검색
             </button>
@@ -429,7 +379,7 @@ const getAverageRating = (
                       <th>카테고리</th>
                       <th>주소</th>
                       <th>전화번호</th>
-                      <th>⭐</th>
+                      <th>별점</th>
                       <th>더보기</th>
                     </tr>
                   </thead>
@@ -616,10 +566,10 @@ const getAverageRating = (
       </div>)}
 
       {mode === "ai" && (
-  <div className="ai-page">
-    <h1>AI 랜덤포레스트 학습 후 결과 보여줄 예정</h1>
-  </div>
+  <Ai />
 )}
+
+     
 
     </div>
   

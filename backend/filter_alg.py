@@ -1,61 +1,56 @@
-def recommend_restaurant(
-    df,
-    region='전체',
-    parking='상관없음',
-    wifi='상관없음',
-    playroom='상관없음',
-    multilingual='상관없음',
-    restroom='상관없음',
-    category='전체',
-    zero_restaurant=False
-):
+from opendata_set import information_final
 
-    result = df.copy()
+def recommend_restaurant(data):
 
-    filters = {
-        '지역명': region,
-        '주차가능': parking,
-        '와이파이제공': wifi,
-        '놀이방': playroom,
-        '다국어메뉴판': multilingual,
-        '화장실': restroom,
-        '업태명': category
-    }
+    region = data.get("region", "전체")
 
-    for column, condition in filters.items():
+    parking = data.get("parking", "전체")
 
-        if condition in ['상관없음', '전체']:
-            continue
+    wifi = data.get("wifi", "전체")
 
-        elif condition == '유':
-            result = result[result[column] == 'Y']
+    category = data.get("category", "전체")
 
-        elif condition == '무':
-            result = result[result[column] == 'N']
+    multilingual = data.get("multilingual", "전체")
 
-        else:
-            result = result[
-                result[column]
-                .astype(str)
-                .str.contains(str(condition), na=False)
-            ]
+    playroom = data.get("playroom", "전체")
 
-    # 제로식당 필터
+    restroom = data.get("restroom", "전체")
+
+    zero_restaurant = data.get("zero_restaurant", "전체")
+
+
+    df = information_final.copy()
+
+    # 지역
+    if region != "전체":
+        df = df[df["지역명"] == region]
+
+    # 주차
+    if parking != "전체":
+        df = df[df["주차가능"] == parking]
+
+    # 와이파이
+    if wifi != "전체":
+        df = df[df["와이파이제공"] == wifi]
+
+    # 놀이방
+    if playroom != "전체":
+        df = df[df["놀이방"] == playroom]
+
+    # 다국어 메뉴판
+    if multilingual != "전체":
+        df = df[df["다국어메뉴판"] == multilingual]
+
+    # 화장실
+    if restroom != "전체":
+        df = df[df["화장실"] == restroom]
+
+    # 카테고리
+    if category != "전체":
+        df = df[df["업태명"] == category]
+
+    # 제로식당
     if zero_restaurant:
-        result = result[result['제로식당'] == 'Y']
+        df = df[df["제로식당"] == "Y"]
 
-    # 필요한 컬럼만 반환
-    return result[
-        [
-            '식당명',
-            '지역명',
-            '해시태그',
-            '소재지도로명',
-            '업태명',
-            '주된음식',
-            '영업장면적(평)',
-            '행정동명',
-            '소재지전화번호',
-            '제로식당'
-        ]
-    ]
+    return df

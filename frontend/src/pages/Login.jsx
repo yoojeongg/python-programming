@@ -6,7 +6,7 @@ import logo from "../images/logo.png";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [sex, setSex] = useState("");
-const [age, setAge] = useState("");
+  const [age, setAge] = useState("");
   const [foods, setFoods] = useState([]);
   const [nfoods, setNfoods] = useState([]);
   const [needFoodInput, setNeedFoodInput] = useState(false);
