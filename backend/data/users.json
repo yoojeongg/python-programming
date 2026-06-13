@@ -26,7 +26,46 @@
     ]
   },
   {
-    "username": "하유정",
+    "username": "상명",
+    "sex": "여성",
+    "age": "20대",
+    "favorite_foods": [
+      "한식",
+      "일식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "자극적",
+      "향신료"
+    ]
+  },
+  {
+    "username": "슴우",
+    "sex": "남성",
+    "age": "10대",
+    "favorite_foods": [
+      "분식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "해산물"
+    ]
+  },
+  {
+    "username": "수뭉",
+    "sex": "남성",
+    "age": "20대",
+    "favorite_foods": [
+      "일식",
+      "중식"
+    ],
+    "avoid_foods": [
+      "매움",
+      "향신료"
+    ]
+  },
+  {
+    "username": "상명대학교",
     "sex": "여성",
     "age": "20대",
     "favorite_foods": [

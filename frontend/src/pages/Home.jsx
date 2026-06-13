@@ -343,6 +343,7 @@ const getAverageRating = (
               <option value="분식">분식</option>
               <option value="주점">주점</option>
               <option value="뷔페">뷔페</option>
+              <option value="기타">기타</option>
             </select></div>
 
             <div className="checkbox-box">

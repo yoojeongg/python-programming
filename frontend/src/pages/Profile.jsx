@@ -57,8 +57,8 @@ export default function Profile() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="profile-container">
+      <div className="profile-box">
 
         <div className="profile-title">내 정보 수정</div>
 

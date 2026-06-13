@@ -94,10 +94,12 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  border :2px solid #F3C11B;
 }
 
 .ai-result-table table {
-
   width: auto;
   border-collapse: collapse;
   text-align: center;
@@ -106,8 +108,8 @@ body {
 .ai-result-table th {
   font-size: 15px;
   font-weight: bolder;
-  background-color: #fff;
-  color: #F3C11B;
+  background-color: #F3C11B;
+  color: #fff;
   padding: 10px;
 }
 
