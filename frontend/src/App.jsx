@@ -11,10 +11,10 @@ function App() {
         {/* 로그인 페이지 */}
         <Route path="/" element={<Login />} />
 
-        {/* 홈 페이지 */}
+        {/* 필터링 페이지 */}
         <Route path="/home" element={<Home />} />
         
-        {/* 홈 페이지 */}
+        {/* AI 페이지 */}
         <Route path="/ai" element={<Ai />} />
 
         {/* 프로필 페이지 */}

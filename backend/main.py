@@ -12,7 +12,6 @@ class UserInput(BaseModel):
     price: int
     time: int
     atmosphere: int
-
     korean: int
     chinese: int
     japanese: int
@@ -21,7 +20,6 @@ class UserInput(BaseModel):
     bunsik: int
     pub: int
     buffet: int
-
     spicy: int
     strong: int
     spice: int
@@ -29,6 +27,7 @@ class UserInput(BaseModel):
     nuts: int
     flour: int
     dairy: int
+
 app = FastAPI()
 
 app.add_middleware(
@@ -39,12 +38,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---------- 모델 ----------
-
+# 모델 
 class LoginRequest(BaseModel):
     username: str
-
-
 class SignupRequest(BaseModel):
     username: str
     sex: str
@@ -52,29 +48,22 @@ class SignupRequest(BaseModel):
     favorite_foods: List[str]
     avoid_foods: List[str]
 
-
-# ---------- 로그인 ----------
-
+# 로그인  
 @app.post("/login")
 def login(data: LoginRequest):
-
     user = get_user(data.username)
-
     # 기존 회원
     if user:
         return {
             "exists": True,
             "user": user
         }
-
     # 신규 회원
     return {
         "exists": False
     }
 
-
-# ---------- 회원가입 ----------
-
+# 회원가입 
 @app.post("/signup")
 def signup(data: SignupRequest):
 
@@ -88,20 +77,11 @@ def signup(data: SignupRequest):
 
     return save_user(user)
 
-
-# ---------- 음식점 추천 ----------
-
+# 필터링 검색
 information_final = pd.read_csv("information_final.csv")
-information_final = information_final.drop_duplicates()
-
-print("✅ 데이터 로딩 완료:", len(information_final))
 import joblib
-
-spanyu_model = joblib.load("user_sample_dataset_500.pkl")
-kong_model = joblib.load("user_sample_dataset_500_2.pkl")
 @app.post("/api/recommend")
 def recommend(data: dict):
-
     try:
         result_df = recommend_restaurant(data)
 
@@ -111,21 +91,18 @@ def recommend(data: dict):
                 orient="records"
             )
         }
-
     except Exception as e:
         print("추천 오류:", e)
         return {
             "error": str(e)
         }
-    
-import joblib
 
+# AI 추천
+import joblib
 spanyu_model = joblib.load("user_sample_dataset_500.pkl")
 kong_model = joblib.load("user_sample_dataset_500_2.pkl")
-
 @app.post("/api/airecommend")
 def airecommend(req: UserInput):
-
     user_data = [
         req.sex,
         req.age,
@@ -133,7 +110,6 @@ def airecommend(req: UserInput):
         req.price,
         req.time,
         req.atmosphere,
-
         req.korean,
         req.chinese,
         req.japanese,
@@ -142,7 +118,6 @@ def airecommend(req: UserInput):
         req.bunsik,
         req.pub,
         req.buffet,
-
         req.spicy,
         req.strong,
         req.spice,
@@ -151,15 +126,12 @@ def airecommend(req: UserInput):
         req.flour,
         req.dairy
     ]
-
     spanyu = spanyu_model.predict_proba(
         [user_data]
     )[0][1]
-
     kong = kong_model.predict_proba(
         [user_data]
     )[0][1]
-
     return {
         "spanyu": round(spanyu * 100, 1),
         "kong": round(kong * 100, 1)

@@ -35,6 +35,7 @@ function Home() {
       [name]: type === "checkbox" ? checked : value,
     });
   };
+  
 //main의 filter_alg 호출
   const getRecommend = async () => {
   try {
